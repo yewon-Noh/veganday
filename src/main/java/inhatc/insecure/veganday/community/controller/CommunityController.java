@@ -1,7 +1,7 @@
 package inhatc.insecure.veganday.community.controller;
 
 import inhatc.insecure.veganday.common.model.ResponseFmt;
-import inhatc.insecure.veganday.common.model.ResponseMsg;
+import inhatc.insecure.veganday.common.model.ResponseMessage;
 import inhatc.insecure.veganday.common.model.StatusCode;
 import inhatc.insecure.veganday.community.model.Community;
 import inhatc.insecure.veganday.community.repository.CommunityRepository;
@@ -26,6 +26,6 @@ public class CommunityController {
     public ResponseEntity findAll(){
 //        return communityRepository.findAll(Sort.by(Sort.Direction.DESC, "writeDt"));
         List<Community> list = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "writeDt"));
-        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMsg.READ_BOARDS, list), HttpStatus.OK);
+        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, list), HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package inhatc.insecure.veganday.common.model;
 
-public class ResponseMsg {
+public class ResponseMessage {
     public static final String READ_BOARDS = "커뮤니티 조회 성공";
     public static final String NOT_FOUND_BOARDS = "커뮤니티 조회 실패";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
