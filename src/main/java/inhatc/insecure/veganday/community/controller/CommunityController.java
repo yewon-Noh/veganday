@@ -60,6 +60,14 @@ public class CommunityController {
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, boardList), HttpStatus.OK);
     }
 
+    @GetMapping("{bid}")
+    public ResponseEntity detail(@RequestParam int bid){
+
+
+        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, ""), HttpStatus.OK);
+    }
+
+
     @GetMapping("/list")
     public ResponseEntity listByPagenation(@PageableDefault(size = 10) Pageable pageable,
                                @RequestParam(required = false, defaultValue = "") String searchText) {
@@ -75,6 +83,9 @@ public class CommunityController {
 
     @PostMapping("")
     public ResponseEntity upload(@RequestBody Board board){
+
+        long millis = System.currentTimeMillis();
+        board.setBid(millis);
 
         Object obj = communityRepository.save(board);
 
