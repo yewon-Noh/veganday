@@ -5,7 +5,7 @@ import inhatc.insecure.veganday.common.model.ResponseFmt;
 import inhatc.insecure.veganday.common.model.ResponseMessage;
 import inhatc.insecure.veganday.common.model.StatusCode;
 import inhatc.insecure.veganday.community.model.Board;
-import inhatc.insecure.veganday.community.model.BoardDTO;
+import inhatc.insecure.veganday.community.model.BoardListDTO;
 import inhatc.insecure.veganday.community.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,8 +32,32 @@ public class CommunityController {
 
     @GetMapping("")
     public ResponseEntity list(@RequestParam(required = false, defaultValue = "") String searchText){
-        List<BoardDTO> list = communityRepository.findList(searchText, Sort.by(Sort.Direction.DESC, "writeDt"));
-        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, list), HttpStatus.OK);
+        List<Board> list = communityRepository.findList(searchText, Sort.by(Sort.Direction.DESC, "writeDt"));
+
+        List<BoardListDTO> boardList = new ArrayList<>();
+        // 날짜 형식 변경
+        for (Board item: list) {
+
+            DateTimeFormatter MD = DateTimeFormatter.ofPattern("MM/dd");
+            DateTimeFormatter HM = DateTimeFormatter.ofPattern("HH:mm");
+
+            LocalDate now = LocalDate.now();
+            LocalDateTime nowDt = now.atTime(0,0,0);
+
+            String writeDt = "";
+            if (item.getWriteDt().isBefore(nowDt)) {
+                //월일 형태로
+                writeDt = item.getWriteDt().format(MD);
+            } else {
+                //시분 형태로
+                writeDt = item.getWriteDt().format(HM);
+            }
+
+            BoardListDTO board = BoardListDTO.res(item.getBid(), item.getTitle(), item.getUserId(), item.getHit(), item.getCommnet(), writeDt);
+            boardList.add(board);
+        }
+
+        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, boardList), HttpStatus.OK);
     }
 
     @GetMapping("/list")
