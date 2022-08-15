@@ -32,4 +32,7 @@ public class Board extends BaseTimeEntity {
 
     @ColumnDefault("0")
     private long hit;
+
+    @Formula("(SELECT count(1) FROM comment c WHERE c.bid = bid)")
+    private long commnet;
 }

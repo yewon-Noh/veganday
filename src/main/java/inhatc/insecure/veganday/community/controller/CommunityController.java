@@ -5,6 +5,7 @@ import inhatc.insecure.veganday.common.model.ResponseFmt;
 import inhatc.insecure.veganday.common.model.ResponseMessage;
 import inhatc.insecure.veganday.common.model.StatusCode;
 import inhatc.insecure.veganday.community.model.Board;
+import inhatc.insecure.veganday.community.model.BoardDTO;
 import inhatc.insecure.veganday.community.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,7 @@ public class CommunityController {
 
     @GetMapping("")
     public ResponseEntity list(@RequestParam(required = false, defaultValue = "") String searchText){
-        List<Board> list = communityRepository.findList(searchText, Sort.by(Sort.Direction.DESC, "writeDt"));
+        List<BoardDTO> list = communityRepository.findList(searchText, Sort.by(Sort.Direction.DESC, "writeDt"));
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, list), HttpStatus.OK);
     }
 
