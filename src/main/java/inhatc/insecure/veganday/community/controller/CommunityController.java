@@ -68,7 +68,7 @@ public class CommunityController {
     public ResponseEntity detail(@PathVariable(name = "bid") Long bid){
 
         List<Board> board = communityRepository.findDetail(bid);
-        List<Comment> comments = communityRepository.findComments(bid, Sort.by(Sort.Direction.DESC, "cid"));
+        List<Comment> comments = communityRepository.findComments(bid);
 
         BoardDetailDTO boardDetail = BoardDetailDTO.res(board, comments);
 
