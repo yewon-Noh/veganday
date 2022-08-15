@@ -1,6 +1,7 @@
 package inhatc.insecure.veganday.community.repository;
 
 import inhatc.insecure.veganday.community.model.Board;
+import inhatc.insecure.veganday.community.model.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,4 +18,9 @@ public interface CommunityRepository extends JpaRepository<Board, Long> {
     @Query("select new map ( b.bid as bid, b.title as title, b.userId as userId, b.hit as hit, b.writeDt as writeDt ) from Board b where b.title like %?1%")
     Page<Board> findListNonCnWithPage(String title, Pageable pageable);
 
+    @Query("select b from Board b where b.bid = ?1")
+    List<Board> findDetail(Long bid);
+
+    @Query("select c from Comment c where c.bid = ?1")
+    List<Comment> findComments(Long bid, Sort sort);
 }

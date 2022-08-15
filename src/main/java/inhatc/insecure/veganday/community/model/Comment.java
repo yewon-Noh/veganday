@@ -1,5 +1,6 @@
 package inhatc.insecure.veganday.community.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import inhatc.insecure.veganday.common.model.BaseTimeEntity;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class Comment extends BaseTimeEntity {
     @Id
     private Long cid;
 
+    @JsonIgnore
     private Long bid;
 
     @NotNull

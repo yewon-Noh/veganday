@@ -5,7 +5,9 @@ import inhatc.insecure.veganday.common.model.ResponseFmt;
 import inhatc.insecure.veganday.common.model.ResponseMessage;
 import inhatc.insecure.veganday.common.model.StatusCode;
 import inhatc.insecure.veganday.community.model.Board;
+import inhatc.insecure.veganday.community.model.BoardDetailDTO;
 import inhatc.insecure.veganday.community.model.BoardListDTO;
+import inhatc.insecure.veganday.community.model.Comment;
 import inhatc.insecure.veganday.community.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,11 +19,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/community")
@@ -60,11 +64,15 @@ public class CommunityController {
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, boardList), HttpStatus.OK);
     }
 
-    @GetMapping("{bid}")
-    public ResponseEntity detail(@RequestParam int bid){
+    @GetMapping("/{bid}")
+    public ResponseEntity detail(@PathVariable(name = "bid") Long bid){
 
+        List<Board> board = communityRepository.findDetail(bid);
+        List<Comment> comments = communityRepository.findComments(bid, Sort.by(Sort.Direction.DESC, "cid"));
 
-        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, ""), HttpStatus.OK);
+        BoardDetailDTO boardDetail = BoardDetailDTO.res(board, comments);
+
+        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, boardDetail), HttpStatus.OK);
     }
 
 
