@@ -8,6 +8,7 @@ import inhatc.insecure.veganday.community.model.Board;
 import inhatc.insecure.veganday.community.model.BoardDetailDTO;
 import inhatc.insecure.veganday.community.model.BoardListDTO;
 import inhatc.insecure.veganday.community.model.Comment;
+import inhatc.insecure.veganday.community.repository.CommentRepository;
 import inhatc.insecure.veganday.community.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,9 @@ public class CommunityController {
 
     @Autowired
     CommunityRepository communityRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
     @GetMapping("")
     public ResponseEntity list(@RequestParam(required = false, defaultValue = "") String searchText){
@@ -67,7 +71,7 @@ public class CommunityController {
     public ResponseEntity detail(@PathVariable(name = "bid") Long bid){
 
         List<Board> board = communityRepository.findDetail(bid);
-        List<Comment> comments = communityRepository.findComments(bid);
+        List<Comment> comments = commentRepository.findComments(bid);
 
         BoardDetailDTO boardDetail = BoardDetailDTO.res(board, comments);
 
@@ -97,5 +101,16 @@ public class CommunityController {
         Object obj = communityRepository.save(board);
 
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_NEW_BOARD, obj), HttpStatus.OK);
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity comment(@RequestBody Comment comment){
+
+        long millis = System.currentTimeMillis();
+        comment.setCid(millis);
+
+        Object obj = commentRepository.save(comment);
+
+        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_NEW_COMMENT, obj), HttpStatus.OK);
     }
 }

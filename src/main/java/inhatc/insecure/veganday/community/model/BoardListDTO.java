@@ -13,7 +13,7 @@ public class BoardListDTO {
     private String title;
     private String userId;
     private long hit;
-    private long commnet;
+    private long comment;
     private String writeDt;
 
     @Builder
@@ -22,7 +22,7 @@ public class BoardListDTO {
         this.title = title;
         this.userId = userId;
         this.hit = hit;
-        this.commnet = comment;
+        this.comment = comment;
         this.writeDt = writeDt;
     }
 

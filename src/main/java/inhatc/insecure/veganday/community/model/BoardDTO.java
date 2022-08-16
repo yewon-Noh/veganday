@@ -7,6 +7,6 @@ public interface BoardDTO {
     String getTitle();
     String getUserId();
     long getHit();
-    long getCommnet();
+    long getComment();
     LocalDateTime getWriteDt();
 }
