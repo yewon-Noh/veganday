@@ -19,13 +19,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/community")
@@ -57,7 +56,7 @@ public class CommunityController {
                 writeDt = item.getWriteDt().format(HM);
             }
 
-            BoardListDTO board = BoardListDTO.res(item.getBid(), item.getTitle(), item.getUserId(), item.getHit(), item.getCommnet(), writeDt);
+            BoardListDTO board = BoardListDTO.res(item.getBid(), item.getTitle(), item.getUserId(), item.getHit(), item.getComment(), writeDt);
             boardList.add(board);
         }
 
@@ -90,7 +89,7 @@ public class CommunityController {
     }
 
     @PostMapping("")
-    public ResponseEntity upload(@RequestBody Board board){
+    public ResponseEntity upload(@RequestBody @Valid Board board){
 
         long millis = System.currentTimeMillis();
         board.setBid(millis);
