@@ -27,6 +27,6 @@ public class ErrorHandler {
             errorList.add(errors.getMessage());
         });
 
-        return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.SAVE_NEW_BOARD_ERROR, errorList), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.WRITE_CONST_ERROR, errorList), HttpStatus.OK);
     }
 }

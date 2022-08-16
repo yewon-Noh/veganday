@@ -21,6 +21,4 @@ public interface CommunityRepository extends JpaRepository<Board, Long> {
     @Query("select b from Board b where b.bid = ?1")
     List<Board> findDetail(Long bid);
 
-    @Query("select c from Comment c where c.bid = ?1")
-    List<Comment> findComments(Long bid);
 }
