@@ -34,7 +34,5 @@ tasks.named('test') {
 }
 
 jar {
-    manifest {
-        attributes 'Main-Class': 'inhatc.insecure.veganday'
-    }
+    enabled = false
 }
