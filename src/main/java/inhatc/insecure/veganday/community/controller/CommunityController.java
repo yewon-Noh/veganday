@@ -67,21 +67,9 @@ public class CommunityController {
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, boardList), HttpStatus.OK);
     }
 
-    @GetMapping("/{bid}")
-    public ResponseEntity detail(@PathVariable(name = "bid") Long bid){
-
-        List<Board> board = communityRepository.findDetail(bid);
-        List<Comment> comments = commentRepository.findComments(bid);
-
-        BoardDetailDTO boardDetail = BoardDetailDTO.res(board, comments);
-
-        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, boardDetail), HttpStatus.OK);
-    }
-
-
     @GetMapping("/list")
     public ResponseEntity listByPagenation(@PageableDefault(size = 10) Pageable pageable,
-                               @RequestParam(required = false, defaultValue = "") String searchText) {
+                                           @RequestParam(required = false, defaultValue = "") String searchText) {
 
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "writeDt");
 
@@ -90,6 +78,42 @@ public class CommunityController {
         Pagenation pg = Pagenation.res(list.getTotalPages(), list.getContent());
 
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, pg), HttpStatus.OK);
+    }
+
+    @GetMapping("/{bid}")
+    public ResponseEntity detail(@PathVariable(name = "bid") Long bid){
+        int result = 0;
+        result = communityRepository.updateHit(bid);
+
+        if(result > 0) {
+            List<Board> board = communityRepository.findDetail(bid);
+            List<Comment> comments = commentRepository.findComments(bid);
+
+            BoardDetailDTO boardDetail = BoardDetailDTO.res(board, comments);
+            return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, boardDetail), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_BOARD_DETAIL, ""), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{bid}/board")
+    public ResponseEntity detailByBoard(@PathVariable(name = "bid") Long bid){
+        int result = 0;
+        result = communityRepository.updateHit(bid);
+
+        if(result > 0) {
+            List<Board> board = communityRepository.findDetail(bid);
+            return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, board), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_BOARD_DETAIL, ""), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{bid}/comment")
+    public ResponseEntity detailByComment(@PathVariable(name = "bid") Long bid){
+        List<Comment> comments = commentRepository.findComments(bid);
+
+        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, comments), HttpStatus.OK);
     }
 
     @PostMapping("")

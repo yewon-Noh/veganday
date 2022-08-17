@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface CommunityRepository extends JpaRepository<Board, Long> {
@@ -21,4 +23,8 @@ public interface CommunityRepository extends JpaRepository<Board, Long> {
     @Query("select b from Board b where b.bid = ?1")
     List<Board> findDetail(Long bid);
 
+    @Transactional
+    @Modifying
+    @Query("update Board b set b.hit = b.hit+1 where b.bid = ?1")
+    int updateHit(Long bid);
 }
