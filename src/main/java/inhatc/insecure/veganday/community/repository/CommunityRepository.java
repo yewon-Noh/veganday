@@ -14,6 +14,9 @@ import java.util.List;
 
 public interface CommunityRepository extends JpaRepository<Board, Long> {
 
+    @Query("select new map ( b.bid as bid, b.title as title ) from Board b")
+    Page<Board> findListB5(Pageable pageable);
+
     @Query("select b from Board b where b.title like %?1%")
     List<Board> findList(String title, Sort sort);
 
