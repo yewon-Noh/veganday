@@ -1,13 +1,9 @@
 package inhatc.insecure.veganday.community.controller;
 
-import inhatc.insecure.veganday.common.model.Pagenation;
-import inhatc.insecure.veganday.common.model.ResponseFmt;
-import inhatc.insecure.veganday.common.model.ResponseMessage;
-import inhatc.insecure.veganday.common.model.StatusCode;
-import inhatc.insecure.veganday.community.model.Board;
-import inhatc.insecure.veganday.community.model.BoardDetailDTO;
-import inhatc.insecure.veganday.community.model.BoardListDTO;
-import inhatc.insecure.veganday.community.model.Comment;
+import inhatc.insecure.veganday.common.model.*;
+import inhatc.insecure.veganday.common.service.FileService;
+import inhatc.insecure.veganday.community.model.*;
+import inhatc.insecure.veganday.community.repository.AttachfileRepository;
 import inhatc.insecure.veganday.community.repository.CommentRepository;
 import inhatc.insecure.veganday.community.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -26,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/community")
@@ -36,6 +35,12 @@ public class CommunityController {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    FileService fileService;
+
+    @Autowired
+    AttachfileRepository attachfileRepository;
 
     @GetMapping("")
     public ResponseEntity list(@RequestParam(required = false, defaultValue = "") String searchText){
@@ -100,7 +105,7 @@ public class CommunityController {
     public ResponseEntity detailByBoard(@PathVariable(name = "bid") Long bid){
         int result = 0;
         result = communityRepository.updateHit(bid);
-
+        System.out.println(">>>>>>>>>>>>> " + result);
         if(result > 0) {
             List<Board> board = communityRepository.findDetail(bid);
             return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, board), HttpStatus.OK);
@@ -116,15 +121,32 @@ public class CommunityController {
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, comments), HttpStatus.OK);
     }
 
-    @PostMapping("")
-    public ResponseEntity upload(@RequestBody @Valid Board board){
+    @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity upload(@RequestPart @Valid Board board, @RequestPart(required = false) MultipartFile file){
+        board.setBid(System.currentTimeMillis());
+        board = communityRepository.save(board);
 
-        long millis = System.currentTimeMillis();
-        board.setBid(millis);
+        if(file != null) {
+            FileDTO filedto = fileService.uploadFile(file);
 
-        Object obj = communityRepository.save(board);
+            if (filedto.getCode() == -2) {
+                return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.IMAGE_UPLOAD_ERROR), HttpStatus.OK);
+            }
+            if (filedto.getCode() == -1) {
+                return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.CANT_NOT_OTHER_FILES), HttpStatus.OK);
+            }
 
-        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_NEW_BOARD, obj), HttpStatus.OK);
+            Attachfile attachfile = new Attachfile();
+            attachfile.setFid(System.currentTimeMillis());
+            attachfile.setFilename(filedto.getFilename());
+            attachfile.setFilepath(filedto.getFilepath());
+
+            attachfile.setBoard(board);
+
+            attachfileRepository.save(attachfile);
+        }
+
+        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_NEW_BOARD), HttpStatus.OK);
     }
 
     @PostMapping("/comment")

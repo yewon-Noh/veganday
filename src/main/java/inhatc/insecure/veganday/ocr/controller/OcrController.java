@@ -1,5 +1,6 @@
 package inhatc.insecure.veganday.ocr.controller;
 
+import inhatc.insecure.veganday.common.model.FileDTO;
 import inhatc.insecure.veganday.common.model.ResponseFmt;
 import inhatc.insecure.veganday.common.model.ResponseMessage;
 import inhatc.insecure.veganday.common.model.StatusCode;
@@ -30,16 +31,17 @@ public class OcrController {
         if(file == null){
             return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.DONT_SEND_PARAM), HttpStatus.OK);
         }
-        
-        String url = fileService.uploadFile(file);
-        if(url == null){
+
+        FileDTO filedto = fileService.uploadFile(file);
+
+        if(filedto.getCode() == -2){
             return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.IMAGE_UPLOAD_ERROR), HttpStatus.OK);
         }
-        if(url == "ERROR-01"){
+        if(filedto.getCode() == -1){
             return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.CANT_NOT_OTHER_FILES), HttpStatus.OK);
         }
 
-        String imageUrl = imageServerPath + url;
+        String imageUrl = filedto.getFilepath();
 
         // OCR 수행
 

@@ -1,5 +1,6 @@
 package inhatc.insecure.veganday.common.service;
 
+import inhatc.insecure.veganday.common.model.FileDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,10 @@ public class FileService {
 
     final List<String> allowFileType = Arrays.asList(".jpg", ".jpeg", ".png");
 
-    public String uploadFile(MultipartFile file) {
+    @Value("${imageServer.path}")
+    private String imageServerPath;
+
+    public FileDTO uploadFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         long size = file.getSize();
         String fileExtension = fileName.substring(fileName.lastIndexOf("."), fileName.length());
@@ -33,7 +37,7 @@ public class FileService {
         }
 
         if(typeChk < 1) {
-            return "ERROR-01";
+            return new FileDTO("","",-1);
         }
 
         // 저장할 위치 지정
@@ -54,17 +58,14 @@ public class FileService {
         File saveFile = new File(filePath + newFilePath);
         try {
             file.transferTo(saveFile);
-
-            // DB 저장
-
         } catch (IllegalStateException e) {
             log.error("파일 업로드 에러");
-            return null;
+            return new FileDTO("","",-2);
         } catch (IOException e) {
             log.error("파일 업로드 에러");
-            return null;
+            return new FileDTO("","",-2);
         }
 
-        return "/image" + newFilePath;
+        return new FileDTO(fileName, imageServerPath + newFilePath , 1);
     }
 }

@@ -1,5 +1,6 @@
 package inhatc.insecure.veganday.community.model;
 
+import com.google.gson.annotations.Expose;
 import inhatc.insecure.veganday.common.model.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,14 +8,12 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Formula;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -40,4 +39,7 @@ public class Board extends BaseTimeEntity {
 
     @Formula("(SELECT count(1) FROM comment c WHERE c.bid = bid)")
     private long comment;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "board")
+    private Attachfile attachfile;
 }
