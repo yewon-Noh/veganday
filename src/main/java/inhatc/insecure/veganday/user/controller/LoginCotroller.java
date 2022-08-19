@@ -48,6 +48,7 @@ public class LoginCotroller {
         String email = payload.getEmail();
         String name = (String) payload.get("name");
             
+        System.out.println("email: " + userId + " name: " + name);
         // Use or store profile information
         // ...
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, email), HttpStatus.OK);
