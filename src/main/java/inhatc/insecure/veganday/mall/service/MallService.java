@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,11 @@ import java.util.List;
 @Service
 public class MallService {
 
-    @Autowired
-    Environment environment;
+    @Value("${naver.id}")
+    private String naverId;
+
+    @Value("${naver.secret}")
+    private String naverSecret;
 
     public List<NaverProductDTO> naverShopSearchAPI(NaverRequestVarDTO naverRequestVarDTO) {
         String url = "https://openapi.naver.com/";
@@ -40,8 +44,8 @@ public class MallService {
 
         RequestEntity<Void> req = RequestEntity.
                 get(uri)
-                .header("X-Naver-Client-Id", environment.getProperty("naver.id"))
-                .header("X-Naver-Client-Secret", environment.getProperty("naver.secret"))
+                .header("X-Naver-Client-Id", naverId)
+                .header("X-Naver-Client-Secret", naverSecret)
                 .build();
 
         ResponseEntity<String> result = restTemplate.exchange(req, String.class);
