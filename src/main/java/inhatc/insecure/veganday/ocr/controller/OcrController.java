@@ -25,11 +25,18 @@ public class OcrController {
     private String imageServerPath;
 
     @PostMapping("")
-    public ResponseEntity ocr(@RequestBody MultipartFile file){
+    public ResponseEntity ocr(@RequestBody(required = false) MultipartFile file){
+
+        if(file == null){
+            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.DONT_SEND_PARAM), HttpStatus.OK);
+        }
         
         String url = fileService.uploadFile(file);
-        if(!(url != null || url != "")){
-            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.SAVE_OCR_IMAGE_ERROR, "이미지 파일만 가능합니다."), HttpStatus.OK);
+        if(url == null){
+            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.IMAGE_UPLOAD_ERROR), HttpStatus.OK);
+        }
+        if(url == "ERROR-01"){
+            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.CANT_NOT_OTHER_FILES), HttpStatus.OK);
         }
 
         String imageUrl = imageServerPath + url;

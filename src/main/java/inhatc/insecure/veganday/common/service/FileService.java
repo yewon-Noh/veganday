@@ -33,7 +33,7 @@ public class FileService {
         }
 
         if(typeChk < 1) {
-            return "";
+            return "ERROR-01";
         }
 
         // 저장할 위치 지정
@@ -58,10 +58,11 @@ public class FileService {
             // DB 저장
 
         } catch (IllegalStateException e) {
-            // 보안에 안좋음 - 수정 필요
-            e.printStackTrace();
+            log.error("파일 업로드 에러");
+            return null;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("파일 업로드 에러");
+            return null;
         }
 
         return "/image" + newFilePath;

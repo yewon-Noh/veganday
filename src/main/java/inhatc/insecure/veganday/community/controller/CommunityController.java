@@ -92,7 +92,7 @@ public class CommunityController {
             BoardDetailDTO boardDetail = BoardDetailDTO.res(board, comments);
             return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, boardDetail), HttpStatus.OK);
         } else {
-            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_BOARD_DETAIL, ""), HttpStatus.OK);
+            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_BOARD_DETAIL), HttpStatus.OK);
         }
     }
 
@@ -105,7 +105,7 @@ public class CommunityController {
             List<Board> board = communityRepository.findDetail(bid);
             return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, board), HttpStatus.OK);
         } else {
-            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_BOARD_DETAIL, ""), HttpStatus.OK);
+            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_BOARD_DETAIL), HttpStatus.OK);
         }
     }
 
