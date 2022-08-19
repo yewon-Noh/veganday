@@ -32,8 +32,8 @@ public class MallControler {
 
     @GetMapping("")
     public ResponseEntity mall(@RequestParam(required = false, defaultValue = "비건음식") String keyword
-                    , @RequestParam(required = false, defaultValue = "100") Integer display
-                    , @RequestParam(required = false, defaultValue = "3") Integer start){
+                    , @RequestParam(required = false, defaultValue = "50") Integer display
+                    , @RequestParam(required = false, defaultValue = "1") Integer start){
         NaverRequestVarDTO varDTO = NaverRequestVarDTO.builder()
                 .keyword(keyword)
                 .display(display)
