@@ -19,15 +19,11 @@ public class UserService {
     	user.setUserId(userId);
     	user.setUserEmail(userEmail);
     	user.setUserName(userName);
-    	System.out.println(userId);
-    	System.out.println(userEmail);
-    	System.out.println(userName);
     	userRepository.save(user);
         return user;
     }
     
-    public Optional<User> findById(String user_id) {
-    	System.out.println(userRepository.findById(user_id));
-        return userRepository.findById(user_id);
+    public Optional<User> findById(String userId) {
+        return userRepository.findById(userId);
     }
 }

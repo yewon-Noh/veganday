@@ -3,6 +3,7 @@ package inhatc.insecure.veganday.user.controller;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,8 @@ import com.google.api.client.json.gson.GsonFactory;
 @RestController
 public class LoginCotroller {
   
+	@Autowired
+	UserService userService;
 	
     @Value("${google.id}")
     private String clientId;
@@ -36,7 +39,6 @@ public class LoginCotroller {
     @CrossOrigin(origins="*")
     @PostMapping("/login")
     public ResponseEntity<ResponseFmt<String>> list(@RequestParam(required = true) String tokenId) throws GeneralSecurityException, IOException, JSONException{
-      System.out.println(tokenId);
       GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
       .setAudience(Collections.singletonList(clientId))
       .build();
@@ -45,10 +47,7 @@ public class LoginCotroller {
       if (idToken != null) {
         Payload payload = idToken.getPayload();
 
-        // Print user identifier
         String userId = payload.getSubject();
-        System.out.println("User ID: " + userId);
-
         String email = payload.getEmail();
         String name = (String) payload.get("name");
         
@@ -56,13 +55,11 @@ public class LoginCotroller {
         uData.put("email" , email);
         uData.put("name" , name);
         
-		UserService userService = new UserService(null);
-		userService.create(userId, name, email);
-//		if(userService.findById(userId).isPresent()) {
-//			
-//		}
+		if(!userService.findById(userId).isPresent()) {
+	        System.out.println("New User");
+			userService.create(userId, name, email);
+		}
           
-        System.out.println("email: " + email + " name: " + name);
         return new ResponseEntity<ResponseFmt<String>>(ResponseFmt.res(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, uData.toString()), HttpStatus.OK);
       } else {
         System.out.println("Invalid ID token.");
