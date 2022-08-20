@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardListDTO {
     private Long bid;
     private String title;
@@ -15,18 +14,21 @@ public class BoardListDTO {
     private long hit;
     private long comment;
     private String writeDt;
+    @Builder.Default
+    private String imagePath = "";
 
     @Builder
-    public BoardListDTO(final long bid, String title, String userId, long hit, long comment, String writeDt){
+    public BoardListDTO(final long bid, String title, String userId, long hit, long comment, String writeDt, String imagePath){
         this.bid = bid;
         this.title = title;
         this.userId = userId;
         this.hit = hit;
         this.comment = comment;
         this.writeDt = writeDt;
+        this.imagePath = imagePath;
     }
 
-    public static BoardListDTO res(final long bid, String title, String userId, long hit, long comment, String writeDt) {
+    public static BoardListDTO res(final long bid, String title, String userId, long hit, long comment, String writeDt, String imagePath) {
         return BoardListDTO.builder()
                 .bid(bid)
                 .title(title)
@@ -34,6 +36,7 @@ public class BoardListDTO {
                 .hit(hit)
                 .comment(comment)
                 .writeDt(writeDt)
+                .imagePath(imagePath)
                 .build();
     }
 }
