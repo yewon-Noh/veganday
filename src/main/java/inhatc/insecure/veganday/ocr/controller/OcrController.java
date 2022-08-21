@@ -60,7 +60,7 @@ public class OcrController {
         }
 
         String imageUrl = filedto.getFilepath();
-
+        String ocrResult = imageUrl;
         // OCR 수행
         try {
 			URL url = new URL(apiURL);
@@ -104,13 +104,14 @@ public class OcrController {
 			}
 			br.close();
 
+			ocrResult = response.toString();
 			System.out.println(response);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 
 
-        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_OCR_IMAGE, imageUrl), HttpStatus.OK);
+        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_OCR_IMAGE, ocrResult), HttpStatus.OK);
     }
 }
     
