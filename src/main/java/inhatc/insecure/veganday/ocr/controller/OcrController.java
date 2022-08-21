@@ -78,7 +78,7 @@ public class OcrController {
 			json.put("timestamp", System.currentTimeMillis());
 			JSONObject image = new JSONObject();
 			image.put("format", "jpg");
-			image.put("url", "http://101.101.219.80:8080/image/2022/08/21/1661017145221.jpg");
+			image.put("url", imageUrl);
 			image.put("name", "vegan");
 			JSONArray images = new JSONArray();
 			images.put(image);
