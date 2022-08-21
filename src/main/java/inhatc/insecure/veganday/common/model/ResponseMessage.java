@@ -22,4 +22,5 @@ public class ResponseMessage {
     public static final String DB_ERROR = "데이터베이스 에러";
     public static final String LOGIN_SUCCESS = "로그인 성공";
     public static final String LOGIN_ERROR = "로그인 에러";
+	public static final String CLASSIFY_SUCCESS = "분류 결과";
 }
