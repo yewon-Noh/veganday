@@ -19,13 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/community")
@@ -68,7 +66,7 @@ public class CommunityController {
 
             String filepath = item.getAttachfile() == null ? "" : item.getAttachfile().getFilepath();
 
-            BoardListDTO board = BoardListDTO.res(item.getBid(), item.getTitle(), item.getUserId(), item.getHit(), item.getComment(), writeDt, filepath);
+            BoardListDTO board = BoardListDTO.res(item.getBid(), item.getTitle(), item.getUserName(), item.getHit(), item.getComment(), writeDt, filepath);
             boardList.add(board);
         }
 
@@ -124,13 +122,13 @@ public class CommunityController {
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, comments), HttpStatus.OK);
     }
 
-    @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity upload(MultipartHttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file){
 
         Board board = new Board();
         board.setTitle(request.getParameter("title"));
         board.setCn(request.getParameter("cn"));
-        board.setUserId(request.getParameter("userId"));
+        board.setUserName(request.getParameter("userName"));
 
         board.setBid(System.currentTimeMillis());
         board = communityRepository.save(board);

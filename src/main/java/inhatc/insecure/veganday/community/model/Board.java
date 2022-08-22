@@ -11,6 +11,8 @@ import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class Board extends BaseTimeEntity {
     @Size(min = 1, max = 500, message = "내용은 최대 500자 입니다.")
     private String cn;
 
-    private String userId;
+    private String userName;
 
     @ColumnDefault("0")
     private long hit;

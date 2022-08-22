@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardUploadDTO {
     private String title;
     private String cn;
-    private String userId;
+    private String userName;
 
     private MultipartFile file;
 }

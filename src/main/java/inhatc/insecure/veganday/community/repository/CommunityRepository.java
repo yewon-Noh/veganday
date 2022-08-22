@@ -20,7 +20,7 @@ public interface CommunityRepository extends JpaRepository<Board, Long> {
     @Query("select b from Board b where b.title like %?1%")
     List<Board> findList(String title, Sort sort);
 
-    @Query("select new map ( b.bid as bid, b.title as title, b.userId as userId, b.hit as hit, b.writeDt as writeDt ) from Board b where b.title like %?1%")
+    @Query("select new map ( b.bid as bid, b.title as title, b.userName as userName, b.hit as hit, b.writeDt as writeDt ) from Board b where b.title like %?1%")
     Page<Board> findListNonCnWithPage(String title, Pageable pageable);
 
     @Query("select b from Board b where b.bid = ?1")
