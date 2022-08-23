@@ -2,9 +2,7 @@ package inhatc.insecure.veganday.community.model;
 
 import com.google.gson.annotations.Expose;
 import inhatc.insecure.veganday.common.model.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Formula;
@@ -17,8 +15,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
 @Entity
 @DynamicUpdate
@@ -34,6 +31,7 @@ public class Board extends BaseTimeEntity {
     @Size(min = 1, max = 500, message = "내용은 최대 500자 입니다.")
     private String cn;
 
+    @NotBlank(message = "작성자는 필수값입니다.")
     private String userName;
 
     @ColumnDefault("0")
@@ -44,4 +42,13 @@ public class Board extends BaseTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "board")
     private Attachfile attachfile;
+
+    @Builder
+    public Board(final long bid, String title, String cn, String userName, long hit){
+        this.bid = bid;
+        this.title = title;
+        this.cn = cn;
+        this.userName = userName;
+        this.hit = hit;
+    }
 }

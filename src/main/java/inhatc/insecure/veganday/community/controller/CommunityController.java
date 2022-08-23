@@ -73,35 +73,6 @@ public class CommunityController {
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, boardList), HttpStatus.OK);
     }
 
-    @GetMapping("/list")
-    public ResponseEntity listByPagenation(@PageableDefault(size = 10) Pageable pageable,
-                                           @RequestParam(required = false, defaultValue = "") String searchText) {
-
-        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "writeDt");
-
-        Page<Board> list = communityRepository.findListNonCnWithPage(searchText, pageRequest);
-
-        Pagenation pg = Pagenation.res(list.getTotalPages(), list.getContent());
-
-        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, pg), HttpStatus.OK);
-    }
-
-    @GetMapping("/{bid}")
-    public ResponseEntity detail(@PathVariable(name = "bid") Long bid){
-        int result = 0;
-        result = communityRepository.updateHit(bid);
-
-        if(result > 0) {
-            List<Board> board = communityRepository.findDetail(bid);
-            List<Comment> comments = commentRepository.findComments(bid);
-
-            BoardDetailDTO boardDetail = BoardDetailDTO.res(board, comments);
-            return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARD_DETAIL, boardDetail), HttpStatus.OK);
-        } else {
-            return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_BOARD_DETAIL), HttpStatus.OK);
-        }
-    }
-
     @GetMapping("/{bid}/board")
     public ResponseEntity detailByBoard(@PathVariable(name = "bid") Long bid){
         int result = 0;
@@ -125,12 +96,12 @@ public class CommunityController {
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity upload(MultipartHttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file){
 
-        Board board = new Board();
-        board.setTitle(request.getParameter("title"));
-        board.setCn(request.getParameter("cn"));
-        board.setUserName(request.getParameter("userName"));
-
-        board.setBid(System.currentTimeMillis());
+        Board board = Board.builder()
+                .bid(System.currentTimeMillis())
+                .title(request.getParameter("title"))
+                .cn(request.getParameter("cn"))
+                .userName(request.getParameter("userName"))
+                .build();
         board = communityRepository.save(board);
 
         if(file != null) {
@@ -143,12 +114,12 @@ public class CommunityController {
                 return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.CANT_NOT_OTHER_FILES), HttpStatus.OK);
             }
 
-            Attachfile attachfile = new Attachfile();
-            attachfile.setFid(System.currentTimeMillis());
-            attachfile.setFilename(filedto.getFilename());
-            attachfile.setFilepath(filedto.getFilepath());
-
-            attachfile.setBoard(board);
+            Attachfile attachfile = Attachfile.builder()
+                    .fid(System.currentTimeMillis())
+                    .filename(filedto.getFilename())
+                    .filepath(filedto.getFilepath())
+                    .board(board)
+                    .build();
 
             attachfileRepository.save(attachfile);
         }

@@ -35,7 +35,6 @@ public class MainController {
 
         PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.DESC, "hit");
         Page<Board> list = communityRepository.findListB5(pageRequest);
-        List<Board> best = list.getContent();
 
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.READ_BOARDS, list.getContent()), HttpStatus.OK);
     }

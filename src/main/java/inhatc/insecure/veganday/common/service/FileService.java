@@ -36,7 +36,6 @@ public class FileService {
 
     public FileDTO uploadFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        long size = file.getSize();
         String fileExtension = file.getContentType();
 
         // 확장자 검사
@@ -59,7 +58,10 @@ public class FileService {
 
         File dir = new File(filePath, uploadPath);
         if(!dir.exists()) {
-            dir.mkdirs();
+            if(!dir.mkdirs()) {
+                log.error("디렉터리 생성 실패");
+                return new FileDTO("","",-2);
+            }
         }
 
         String fileEx = fileName.substring(fileName.lastIndexOf("."), fileName.length());
