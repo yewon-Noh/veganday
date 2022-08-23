@@ -27,7 +27,6 @@ public class OcrClassifyController {
 	@PostMapping("")
 	ResponseEntity classify(@RequestBody(required = false) ArrayList<String> info) throws GeneralSecurityException, IOException, JSONException{
 		result = "";
-		System.out.println(info);
 		info.forEach(element -> {
 			for (String str : list) {
 				if (element.equals(str)) {

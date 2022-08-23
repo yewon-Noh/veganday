@@ -1,10 +1,7 @@
 package inhatc.insecure.veganday.community.model;
 
-import inhatc.insecure.veganday.common.model.Pagenation;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class BoardListDTO {

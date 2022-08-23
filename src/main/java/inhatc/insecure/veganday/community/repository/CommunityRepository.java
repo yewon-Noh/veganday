@@ -1,7 +1,6 @@
 package inhatc.insecure.veganday.community.repository;
 
 import inhatc.insecure.veganday.community.model.Board;
-import inhatc.insecure.veganday.community.model.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

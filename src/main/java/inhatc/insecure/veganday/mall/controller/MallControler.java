@@ -3,13 +3,10 @@ package inhatc.insecure.veganday.mall.controller;
 import inhatc.insecure.veganday.common.model.ResponseFmt;
 import inhatc.insecure.veganday.common.model.ResponseMessage;
 import inhatc.insecure.veganday.common.model.StatusCode;
-import inhatc.insecure.veganday.community.model.Board;
-import inhatc.insecure.veganday.community.model.BoardListDTO;
 import inhatc.insecure.veganday.mall.model.NaverProductDTO;
 import inhatc.insecure.veganday.mall.model.NaverRequestVarDTO;
 import inhatc.insecure.veganday.mall.service.MallService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

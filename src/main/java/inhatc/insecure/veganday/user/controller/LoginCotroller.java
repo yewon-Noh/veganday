@@ -56,13 +56,11 @@ public class LoginCotroller {
         uData.put("name" , name);
         
 		if(!userService.findById(userId).isPresent()) {
-	        System.out.println("New User");
 			userService.create(userId, name, email);
 		}
           
         return new ResponseEntity<ResponseFmt<String>>(ResponseFmt.res(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, uData.toString()), HttpStatus.OK);
       } else {
-        System.out.println("Invalid ID token.");
         return new ResponseEntity<ResponseFmt<String>>(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.LOGIN_ERROR, null), HttpStatus.OK);
       }
     }

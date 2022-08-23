@@ -7,11 +7,7 @@ import inhatc.insecure.veganday.community.repository.AttachfileRepository;
 import inhatc.insecure.veganday.community.repository.CommentRepository;
 import inhatc.insecure.veganday.community.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -102,7 +98,7 @@ public class CommunityController {
                 .cn(request.getParameter("cn"))
                 .userName(request.getParameter("userName"))
                 .build();
-        board = communityRepository.save(board);
+        communityRepository.save(board);
 
         if(file != null) {
             FileDTO filedto = fileService.uploadFile(file);
