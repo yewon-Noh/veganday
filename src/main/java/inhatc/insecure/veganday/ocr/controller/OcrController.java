@@ -5,6 +5,7 @@ import inhatc.insecure.veganday.common.model.ResponseFmt;
 import inhatc.insecure.veganday.common.model.ResponseMessage;
 import inhatc.insecure.veganday.common.model.StatusCode;
 import inhatc.insecure.veganday.common.service.FileService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 @RestController
 @RequestMapping("/ocr")
+@Slf4j
 public class OcrController {
     
     @Autowired
@@ -106,11 +108,14 @@ public class OcrController {
 
 			ocrResult = response.toString();
 		} catch (ProtocolException e) {
-			throw new RuntimeException(e);
+			log.error(String.valueOf(e));
+			return new ResponseEntity(ResponseFmt.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.OCR_ERROR, ocrResult), HttpStatus.OK);
 		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
+			log.error(String.valueOf(e));
+			return new ResponseEntity(ResponseFmt.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.OCR_ERROR, ocrResult), HttpStatus.OK);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			log.error(String.valueOf(e));
+			return new ResponseEntity(ResponseFmt.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.OCR_ERROR, ocrResult), HttpStatus.OK);
 		}
 
 

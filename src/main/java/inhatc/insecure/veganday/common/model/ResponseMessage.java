@@ -11,8 +11,8 @@ public class ResponseMessage {
     public static final String SAVE_NEW_COMMENT_ERROR = "댓글 작성에 실패하였습니다.";
     public static final String READ_MALL = "상품 조회 성공";
     public static final String NOT_FOUND_MALL = "조회에 실패하였습니다.";
-    public static final String SAVE_OCR_IMAGE = "OCR 이미지 저장 성공";
-    public static final String OCR_ERROR = "검색에 실패하였습니다.";
+    public static final String SAVE_OCR_IMAGE = "OCR 검색 성공";
+    public static final String OCR_ERROR = "OCR 검색에 실패하였습니다.";
 
     public static final String DONT_SEND_PARAM = "값이 전달되지 않았습니다.";
     public static final String WRITE_CONST_ERROR = "제약조건 불일치";
