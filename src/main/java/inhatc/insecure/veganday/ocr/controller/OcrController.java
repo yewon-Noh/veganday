@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,7 +43,7 @@ public class OcrController {
     @Value("${clova.url}")
     private String apiURL;
 
-    @PostMapping("")
+	@PostMapping("")
     public ResponseEntity ocr(@RequestBody(required = false) MultipartFile file){
 
         if(file == null){
@@ -89,9 +93,9 @@ public class OcrController {
 			int responseCode = con.getResponseCode();
 			BufferedReader br;
 			if (responseCode == 200) {
-				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+				br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 			} else {
-				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
 			}
 			String inputLine;
 			StringBuffer response = new StringBuffer();
@@ -101,12 +105,16 @@ public class OcrController {
 			br.close();
 
 			ocrResult = response.toString();
-		} catch (Exception e) {
-			System.out.println(e);
+		} catch (ProtocolException e) {
+			throw new RuntimeException(e);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 
 
-        return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_OCR_IMAGE, ocrResult), HttpStatus.OK);
+		return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_OCR_IMAGE, ocrResult), HttpStatus.OK);
     }
 }
     
