@@ -23,7 +23,7 @@ import inhatc.insecure.veganday.common.model.StatusCode;
 public class OcrClassifyController {
 	
 	String result;
-    List<String> list = new ArrayList<>(Arrays.asList("쇠고기", "가금류", "꿀","밀납", "가쓰오부시", "멸치", "연어", "연육", "피쉬콜라겐", "코치닐", "카민", "카르민", "적색색소 4호", "쉘락", "우지", "조미쇠고기맛후레크", "돼지고기", "닭고기"));
+    List<String> list = new ArrayList<>(Arrays.asList("쇠고기", "가금류", "꿀","밀납", "가쓰오부시", "멸치", "연어", "연육", "피쉬콜라겐", "코치닐", "카민", "카르민", "적색색소 4호", "쉘락", "우지", "조미쇠고기맛후레크", "돼지고기", "닭고기", "버터", "가공버터", "우유", "달걀"));
 	@PostMapping("")
 	ResponseEntity classify(@RequestBody(required = false) ArrayList<String> info) throws GeneralSecurityException, IOException, JSONException{
 		result = "";
