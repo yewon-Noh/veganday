@@ -79,6 +79,6 @@ public class FileService {
             return new FileDTO("","",-2);
         }
 
-        return new FileDTO(fileName, imageServerPath + newFilePath , 1);
+        return new FileDTO(fileName, newFilePath , 1);
     }
 }

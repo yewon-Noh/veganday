@@ -47,10 +47,10 @@ public class EmailController {
             MailDTO mail = MailDTO.builder()
                     .email(request.getParameter("email"))
                     .title("[비건데이] 화면 캡처 결과 전송")
-                    .content(filedto.getFilepath())
+                    .content("비건데이 화면 캡처본입니다.")
                     .build();
 
-            emailService.sendMail(mail);
+            emailService.sendMail(mail, filedto);
         }
 
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SEND_EMAIL_SUCCESS), HttpStatus.OK);

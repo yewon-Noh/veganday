@@ -61,7 +61,7 @@ public class OcrController {
             return new ResponseEntity(ResponseFmt.res(StatusCode.BAD_REQUEST, ResponseMessage.CANT_NOT_OTHER_FILES), HttpStatus.OK);
         }
 
-        String imageUrl = filedto.getFilepath();
+        String imageUrl = imageServerPath + filedto.getFilepath();
         String ocrResult = imageUrl;
         // OCR 수행
         try {
