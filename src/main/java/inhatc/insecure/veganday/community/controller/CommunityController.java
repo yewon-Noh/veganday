@@ -15,11 +15,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController
 @RequestMapping("/community")
@@ -36,6 +42,12 @@ public class CommunityController {
 
     @Autowired
     AttachfileRepository attachfileRepository;
+
+    @Value("${telegram.token}")
+    private String telegramToken;
+
+    @Value("${telegram.id}")
+    private String telegramId;
 
     @GetMapping("")
     public ResponseEntity list(@RequestParam(required = false, defaultValue = "") String searchText){
@@ -118,6 +130,24 @@ public class CommunityController {
                     .build();
 
             attachfileRepository.save(attachfile);
+        }
+        String Token = telegramToken;
+        String chat_id = telegramId;
+        
+        BufferedReader in = null;
+        
+        try {
+            System.out.println("telegram send");
+            URL obj = new URL("https://api.telegram.org/bot" + Token + "/sendmessage?chat_id=" + chat_id + "&text=" + request.getParameter("userName")+"님께서 " + request.getParameter("title")+ "을(를) 등록하였습니다."); // 호출할 url
+            
+            HttpURLConnection con = (HttpURLConnection)obj.openConnection();
+            con.setRequestMethod("GET");
+            in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));	 
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(in != null) try { in.close(); } catch(Exception e) { e.printStackTrace(); }
         }
 
         return new ResponseEntity(ResponseFmt.res(StatusCode.OK, ResponseMessage.SAVE_NEW_BOARD), HttpStatus.OK);
