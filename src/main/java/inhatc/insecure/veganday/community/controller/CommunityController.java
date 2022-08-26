@@ -138,7 +138,7 @@ public class CommunityController {
         
         try {
             System.out.println("telegram send");
-            URL obj = new URL("https://api.telegram.org/bot" + Token + "/sendmessage?chat_id=" + chat_id + "&text=" + request.getParameter("userName")+"님께서 " + request.getParameter("title")+ "을(를) 등록하였습니다."); // 호출할 url
+            URL obj = new URL("https://api.telegram.org/bot" + Token + "/sendmessage?chat_id=" + chat_id + "&text=" + request.getParameter("userName")+"님께서 게시물을 등록하였습니다.%0A제목: "+request.getParameter("title")+"%0A내용: "+request.getParameter("cn")); // 호출할 url
             
             HttpURLConnection con = (HttpURLConnection)obj.openConnection();
             con.setRequestMethod("GET");
