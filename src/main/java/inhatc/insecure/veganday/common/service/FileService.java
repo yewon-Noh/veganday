@@ -23,9 +23,6 @@ public class FileService {
 
     final List<String> allowFileType = Arrays.asList("image/jpg", "image/jpeg", "image/png");
 
-    @Value("${imageServer.path}")
-    private String imageServerPath;
-
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();

@@ -43,6 +43,9 @@ public class CommunityController {
     @Autowired
     AttachfileRepository attachfileRepository;
 
+    @Value("${imageServer.path}")
+    private String imageServerPath;
+
     @Value("${telegram.token}")
     private String telegramToken;
 
@@ -125,7 +128,7 @@ public class CommunityController {
             Attachfile attachfile = Attachfile.builder()
                     .fid(System.currentTimeMillis())
                     .filename(filedto.getFilename())
-                    .filepath(filedto.getFilepath())
+                    .filepath(imageServerPath + filedto.getFilepath())
                     .board(board)
                     .build();
 
