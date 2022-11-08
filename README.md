@@ -11,6 +11,10 @@
 
 [소개딩_InSecure_비건데이](https://www.youtube.com/shorts/vZUcYQkEP-g)
 
+**발표 영상**
+
+[SW개발보안 경진대회 수상작 발표](https://www.youtube.com/watch?v=t24MmM7b1v8)
+
 **Front Source**
 
 [RN_소스](https://github.com/SeongHo-C/Vegan-Day)
